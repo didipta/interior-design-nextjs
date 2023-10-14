@@ -19,3 +19,10 @@ export type IGenericErrorMessage = {
   path: string | number;
   message: string;
 };
+export type Inputs = {
+  categoryname: string;
+};
+
+export type IDProps = {
+  params: any;
+};

@@ -1,16 +1,14 @@
 "use client";
+import { instance } from "@/Service/Axios/interceptors";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
+import { IDProps, Inputs } from "@/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { instance } from "@/Service/Axios/interceptors";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Inputs } from "@/types";
-
-
-const Addcategory = () => {
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+const Updatecategory = ({ params }: IDProps) => {
   const [error, seterror] = React.useState([]) as any;
 
   const router = useRouter();
@@ -18,13 +16,27 @@ const Addcategory = () => {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit = (data: Inputs) => {
+  useEffect(() => {
+    instance
+      .get(`/category/${params.id}`)
+      .then((res) => {
+        reset(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const onSubmit = (data: any) => {
     console.log(data);
     instance
-      .post("/category", data)
+      .put(`/category/${data?.id}`, {
+        categoryname: data?.categoryname,
+      })
       .then((res) => {
         toast.success("Category Added");
         router.push("/dashboard/category");
@@ -43,7 +55,7 @@ const Addcategory = () => {
         list={[
           { name: "Dashboard", link: "/dashboard" },
           { name: "Category", link: "/dashboard/category" },
-          { name: "Add Category", link: "/dashboard/category/create" },
+          { name: "Update Category", link: "/dashboard/category/Edit" },
         ]}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -78,4 +90,4 @@ const Addcategory = () => {
   );
 };
 
-export default Addcategory;
+export default Updatecategory;
