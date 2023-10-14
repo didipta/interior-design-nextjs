@@ -1,0 +1,16 @@
+{
+    "wrap.with.sectionshow": {
+
+        "label": "@section-show",
+        "description": "@section...@show",
+        "disabled": false,
+        "snippet": "@section ('${1}') \n\t$TM_SELECTED_TEXT\n@show$0"
+    },
+    "wrap.with.auth": {
+        
+        "label": "@auth",
+        "description": "@auth...@endauth",
+        "disabled": false,
+        "snippet": "@auth\n\t$TM_SELECTED_TEXT\n@endauth$0"
+    }
+}
