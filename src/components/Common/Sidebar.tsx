@@ -38,6 +38,14 @@ const Sidebar = () => {
             Category
           </Link>
         </li>
+        <li>
+          <Link
+            href="/dashboard/service"
+            className={`${pathname === "/dashboard/service" ? "active" : ""}`}
+          >
+            Service
+          </Link>
+        </li>
       </ul>
     </div>
   );

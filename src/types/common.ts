@@ -26,3 +26,15 @@ export type Inputs = {
 export type IDProps = {
   params: any;
 };
+
+export type IService = {
+  id: string;
+  name: string;
+  img: string;
+  price: number;
+  Available: number;
+  slug: string;
+  description: string;
+  shortdescription: string;
+  servicecategoryId: string;
+};
