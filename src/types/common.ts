@@ -38,3 +38,14 @@ export type IService = {
   shortdescription: string;
   servicecategoryId: string;
 };
+
+export type Iusersign = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type Iusersignin = {
+  email: string;
+  password: string;
+};

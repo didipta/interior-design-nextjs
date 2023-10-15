@@ -1,8 +1,20 @@
+"use client";
+import { setCurrentUser } from "@/redux/Slice/Userslice/Userslices";
+import { useGetUserQuery } from "@/redux/Slice/Userslice/userApi";
+import { useAppDispatch } from "@/redux/hook";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Header = () => {
+  const { data: user, isFetching, isLoading } = useGetUserQuery({}) as any;
+  const dispatch = useAppDispatch();
+
+  if (!isLoading) {
+    if (user?.statusCode === 200) {
+      dispatch(setCurrentUser(user?.data));
+    }
+  }
   return (
     <div>
       <div className="navbar bg-base-100">
@@ -80,7 +92,12 @@ const Header = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          <Link
+            href="/login"
+            className="px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-600 rounded hover:bg-purple-500 focus:outline-none focus:bg-purple-500"
+          >
+            Login
+          </Link>
         </div>
       </div>
     </div>

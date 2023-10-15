@@ -1,7 +1,39 @@
+"use client";
+import { useSignupuserMutation } from "@/redux/Slice/Userslice/userApi";
+import { Iusersign } from "@/types";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const Signup = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Iusersign>();
+
+  const [signupuser] = useSignupuserMutation();
+  const router = useRouter();
+
+  const onSubmit = (data: Iusersign) => {
+    signupuser(data)
+      .then((res: any) => {
+        if (res?.error?.data?.success !== undefined) {
+          toast.error(res?.error?.data?.message);
+        } else {
+          reset();
+          toast.success("User Created");
+          router.push("/login");
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
   return (
     <div>
       <div className="flex items-center min-h-screen p-6 bg-gray-300">
@@ -22,7 +54,7 @@ const Signup = () => {
               />
             </div>
             <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-              <div className="w-full">
+              <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                 <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
                   Sign Up
                 </h1>
@@ -34,6 +66,18 @@ const Signup = () => {
                     type="text"
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input p-2"
                     placeholder="Jane Doe"
+                    {...register("name", { required: true })}
+                  />
+                </label>
+                <label className="block mt-4 text-sm">
+                  <span className="text-gray-700 dark:text-gray-400">
+                    Email
+                  </span>
+                  <input
+                    type="email"
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input p-2"
+                    placeholder="Jane@gmail.com"
+                    {...register("email", { required: true })}
                   />
                 </label>
                 <label className="block mt-4 text-sm">
@@ -44,16 +88,7 @@ const Signup = () => {
                     type="password"
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input p-2"
                     placeholder="***************"
-                  />
-                </label>
-                <label className="block mt-4 text-sm">
-                  <span className="text-gray-700 dark:text-gray-400">
-                    Confirm Password
-                  </span>
-                  <input
-                    type="password"
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input p-2"
-                    placeholder="***************"
+                    {...register("password", { required: true })}
                   />
                 </label>
                 <div className="flex mt-6 text-sm">
@@ -91,7 +126,7 @@ const Signup = () => {
                     </Link>
                   </p>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
