@@ -107,7 +107,7 @@ const Addservice = () => {
           </button>
         </div>
 
-        <div className=" grid grid-cols-2 gap-2 justify-center items-center mt-5">
+        <div className=" grid md:grid-cols-2 grid-cols-1 gap-2 justify-center items-center mt-5">
           <div className="form-control w-full max-w-md">
             <label className="label">
               <span className="label-text  text-md">Service name</span>

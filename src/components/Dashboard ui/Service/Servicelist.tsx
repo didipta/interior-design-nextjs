@@ -2,30 +2,41 @@
 import { instance } from "@/Service/Axios/interceptors";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import Loader from "@/components/Common/Loader";
+import ReactPaginate from "react-paginate";
 
 const Servicelist = () => {
   const [allservice, setallservice] = useState([]) as any;
   const [loading, setloading] = useState(false) as any;
+  const [meta, setmeta] = useState({}) as any;
+  const [page, setpage] = useState(1) as any;
 
   useEffect(() => {
     setloading(true);
-    instance.get("/service").then((res) => {
-      setallservice(res.data);
+    instance.get(`/service?limit=10&page=${page}`).then((res) => {
+      setallservice(res.data.data);
+      setmeta(res.data.meta);
       setloading(false);
     });
-  }, []);
+  }, [page]);
 
   const handeldelect = (id: string) => {
     instance.delete(`/service/${id}`).then((res) => {
       toast.success("Service Deleted Successfully");
       setallservice(allservice.filter((item: any) => item.id !== id));
     });
+  };
+  const handlePageChange = ({ selected }: any) => {
+    setpage(selected + 1);
   };
 
   return (
@@ -34,7 +45,7 @@ const Servicelist = () => {
         list={[
           { name: "Dashboard", link: "/dashboard" },
           { name: "Service", link: "/dashboard/service" },
-          { name: "Service List", link: "/dashboard/service/list" },
+          { name: "Service List", link: "/dashboard/service" },
         ]}
       />
       <div className="flex justify-between items-center my-3">
@@ -71,7 +82,7 @@ const Servicelist = () => {
               </tr>
             </thead>
             <tbody>
-              {allservice?.data?.map((item: any) => (
+              {allservice?.map((item: any) => (
                 <tr>
                   <th>
                     <label>
@@ -130,6 +141,20 @@ const Servicelist = () => {
             </tbody>
             {/* foot */}
           </table>
+          <div className="w-full grid justify-center p-5 mt-10">
+            <ReactPaginate
+              previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
+              nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={meta?.total / 20}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={3}
+              onPageChange={handlePageChange}
+              containerClassName={"pagination"}
+              activeClassName={"active"}
+            />
+          </div>
         </div>
       )}
     </div>

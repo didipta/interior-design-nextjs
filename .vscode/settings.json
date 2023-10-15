@@ -12,5 +12,8 @@
         "description": "@auth...@endauth",
         "disabled": false,
         "snippet": "@auth\n\t$TM_SELECTED_TEXT\n@endauth$0"
-    }
+    },
+    "cSpell.words": [
+        "outut"
+    ]
 }

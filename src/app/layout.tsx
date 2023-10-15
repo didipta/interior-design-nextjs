@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
+import Providers from "@/components/lib/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className=" container mx-auto">
-        {children}
+        <Providers>{children}</Providers>
+
         <Toaster />
       </body>
     </html>
