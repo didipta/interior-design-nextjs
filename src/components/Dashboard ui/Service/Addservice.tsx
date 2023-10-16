@@ -63,7 +63,7 @@ const Addservice = () => {
       .catch((err) => {
         setloading(false);
         if (err.response.status === 400) {
-          seterror(err?.response?.data?.errors);
+          seterror(err?.response?.data?.errorMessages);
         }
       });
 

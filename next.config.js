@@ -7,7 +7,7 @@ const nextConfig = {
     IMG_KEY: process.env.IMG_KEY,
   },
   images: {
-    domains: [""],
+    domains: ["res.cloudinary.com"],
   },
 };
 
