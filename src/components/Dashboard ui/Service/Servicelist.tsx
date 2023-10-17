@@ -13,6 +13,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import Loader from "@/components/Common/Loader";
 import ReactPaginate from "react-paginate";
+import Pagination from "@/components/Common/Paginationpage";
 
 const Servicelist = () => {
   const [allservice, setallservice] = useState([]) as any;
@@ -142,17 +143,9 @@ const Servicelist = () => {
             {/* foot */}
           </table>
           <div className="w-full grid justify-center p-5 mt-10">
-            <ReactPaginate
-              previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
-              nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
-              breakLabel={"..."}
-              breakClassName={"break-me"}
-              pageCount={meta?.total / 20}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={handlePageChange}
-              containerClassName={"pagination"}
-              activeClassName={"active"}
+            <Pagination
+              totalPages={Math.ceil(meta?.total / 10)}
+              handlePageChange={handlePageChange}
             />
           </div>
         </div>

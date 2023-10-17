@@ -38,33 +38,49 @@ body {
   
   .pagination {
     display: flex;
-    justify-content: center;
     list-style: none;
     padding: 0;
   }
   
   .pagination li {
-    margin-right: 0.5rem;
+    margin: 0 5px;
   }
   
   .pagination li a {
-    display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border-radius: 50%;
-    color: #969696;
+    color: #007BFF;
     text-decoration: none;
-    font-weight: bolder;
-    box-shadow: 0 0 10px #96969644;
+    padding: 5px 10px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
   }
   
   .pagination li a:hover {
-    background-color: #2798d544;
-    color: #969696;
+    background-color: #007BFF;
+    color: #fff;
   }
   
-  .pagination .active a {
-    background-color: #2799d5;
+  .pagination li.active a {
+    background-color: #007BFF;
     color: #fff;
+  }
+  
+  .pagination li.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+  .pagination li.prev,
+  .pagination li.next {
+    font-weight: bold;
+  }
+  .pagination .ellipsis {
+    margin: 0 5px;
+    padding: 5px;
+    pointer-events: none;
+  }
+  
+  .pagination .ellipsis span {
+    font-size: 20px;
   }
   .shortdes{
     overflow: hidden;

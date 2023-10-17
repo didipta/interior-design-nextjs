@@ -1,12 +1,24 @@
 "use client";
+import { instance } from "@/Service/Axios/interceptors";
 import { setCurrentUser } from "@/redux/Slice/Userslice/Userslices";
 import { useGetUserQuery } from "@/redux/Slice/Userslice/userApi";
 import { useAppDispatch } from "@/redux/hook";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Header = () => {
+  const [category, setcategory] = React.useState([]) as any[];
+  useEffect(() => {
+    instance
+      .get("/category/namelist/list")
+      .then((res) => {
+        setcategory(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const { data: user, isFetching, isLoading } = useGetUserQuery({}) as any;
   const dispatch = useAppDispatch();
 
@@ -38,21 +50,13 @@ const Header = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-80"
             >
               <li>
                 <Link href="/">Home</Link>
               </li>
               <li>
                 <a>Service</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
               </li>
               <li>
                 <Link href="/dashboard">Dashboard</Link>
@@ -73,18 +77,8 @@ const Header = () => {
             <li>
               <Link href="/">Home</Link>
             </li>
-            <li tabIndex={0}>
-              <details>
-                <summary>Service</summary>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
+            <li>
+              <Link href="/service">Service</Link>
             </li>
             <li>
               <Link href="/dashboard">Dashboard</Link>
