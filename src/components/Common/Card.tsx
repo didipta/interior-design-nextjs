@@ -1,7 +1,26 @@
+"use client";
+import { useAddcartMutation } from "@/redux/Slice/cartslice/cartapi";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 
 const Card = ({ item }: any) => {
+  const router = useRouter();
+  const [data] = useAddcartMutation();
+  
+  const addcart = async (id: any) => {
+    data(id).then((res: any) => {
+      console.log(res);
+      if (res?.data?.success === true) {
+        toast.success("Added to cart");
+      }
+      if (res?.error?.status === 401) {
+        toast.error("Please Login First");
+        return router.push("/login");
+      }
+    });
+  };
   return (
     <div className="card bordered shadow-lg">
       <figure>
@@ -14,14 +33,16 @@ const Card = ({ item }: any) => {
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title text-xl font-bold">{item?.name}</h2>
+        <h2 className="card-title text-xl font-bold name">{item?.name}</h2>
         <p className="text-gray-500 shortdes">{item?.shortdescription}</p>
         <p className="text-gray-500 shortdes">
           <strong>Price:</strong> {item?.price}-Tk
         </p>
         <div className="card-actions mt-4">
           <button className="btn bg-orange-400 text-white">Book Now</button>
-          <button className="btn ">Add to cart</button>
+          <button className="btn " onClick={() => addcart(item.id)}>
+            Add to cart
+          </button>
         </div>
       </div>
     </div>

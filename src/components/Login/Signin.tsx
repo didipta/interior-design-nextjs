@@ -10,6 +10,7 @@ import { useLoginuserMutation } from "@/redux/Slice/Userslice/userApi";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/redux/hook";
 import { setCurrentUser } from "@/redux/Slice/Userslice/Userslices";
+import { setCookie } from "cookies-next";
 
 const Signin = () => {
   const router = useRouter();
@@ -32,6 +33,7 @@ const Signin = () => {
           toast.success("Login Success");
           console.log(res.data);
           localStorage.setItem("accessToken", res.data.token);
+          setCookie("token", res.data.token);
           dispatch(setCurrentUser(res.data.data));
           router.push("/");
         }
