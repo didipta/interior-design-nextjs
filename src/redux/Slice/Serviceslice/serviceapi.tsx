@@ -8,11 +8,10 @@ const Service = api.injectEndpoints({
       providesTags: ["service"],
     }),
     getservicebyid: builder.query({
-      query: (id: any) => `/books/${id}`,
+      query: (id: any) => `/service/${id}`,
       providesTags: ["service"],
     }),
   }),
 });
 
 export const { useGetserviceQuery, useGetservicebyidQuery } = Service;
-

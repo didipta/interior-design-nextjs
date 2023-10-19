@@ -1,6 +1,7 @@
 "use client";
 import { useAddcartMutation } from "@/redux/Slice/cartslice/cartapi";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
@@ -8,7 +9,7 @@ import toast from "react-hot-toast";
 const Card = ({ item }: any) => {
   const router = useRouter();
   const [data] = useAddcartMutation();
-  
+
   const addcart = async (id: any) => {
     data(id).then((res: any) => {
       console.log(res);
@@ -33,7 +34,12 @@ const Card = ({ item }: any) => {
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title text-xl font-bold name">{item?.name}</h2>
+        <Link
+          href={`/service/${item?.id}`}
+          className="card-title text-xl font-bold name"
+        >
+          {item?.name}
+        </Link>
         <p className="text-gray-500 shortdes">{item?.shortdescription}</p>
         <p className="text-gray-500 shortdes">
           <strong>Price:</strong> {item?.price}-Tk

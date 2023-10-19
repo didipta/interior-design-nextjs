@@ -33,7 +33,7 @@ const Signin = () => {
           toast.success("Login Success");
           console.log(res.data);
           localStorage.setItem("accessToken", res.data.token);
-          setCookie("token", res.data.token);
+          setCookie("token", res.data.token, );
           dispatch(setCurrentUser(res.data.data));
           router.push("/");
         }
