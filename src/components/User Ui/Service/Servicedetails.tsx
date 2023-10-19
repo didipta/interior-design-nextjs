@@ -84,7 +84,7 @@ const Servicedetails = ({ id }: any) => {
       });
   };
   const setreview = () => {
-    if (rating === 0 && review === "") {
+    if (rating === 0 || review === "") {
       return toast.error("Please give rating and review");
     } else {
       instance

@@ -1,6 +1,6 @@
 "use client";
 import { instance } from "@/Service/Axios/interceptors";
-import { setCurrentUser } from "@/redux/Slice/Userslice/Userslices";
+import { removeuse, setCurrentUser } from "@/redux/Slice/Userslice/Userslices";
 import { useGetUserQuery } from "@/redux/Slice/Userslice/userApi";
 import { useGetcartQuery } from "@/redux/Slice/cartslice/cartapi";
 import {
@@ -9,13 +9,16 @@ import {
 } from "@/redux/Slice/notification/notificationapi";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { TimeSince } from "@/utils/timeset";
+import { deleteCookie } from "cookies-next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const Header = () => {
+  const router = useRouter();
   const [category, setcategory] = React.useState([]) as any[];
-  const { currentUser }:any = useAppSelector((state) => state.UserSlice);
+  const { currentUser }: any = useAppSelector((state) => state.UserSlice);
   useEffect(() => {
     instance
       .get("/category/namelist/list")
@@ -54,6 +57,14 @@ const Header = () => {
       dispatch(setCurrentUser(user?.data));
     }
   }
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    deleteCookie("token");
+    dispatch(removeuse());
+    router.push("/");
+    window.location.reload();
+  };
   return (
     <div>
       <div className="navbar bg-base-100">
@@ -83,11 +94,22 @@ const Header = () => {
                 <Link href="/">Home</Link>
               </li>
               <li>
-                <a>Service</a>
+                <Link href="/service">Service</Link>
               </li>
-              <li>
-                <Link href="/dashboard">Dashboard</Link>
-              </li>
+              {currentUser !== null && (
+                <>
+                  {currentUser?.role === "admin" ||
+                    (currentUser?.role === "Superadmin" && (
+                      <li>
+                        <Link href="/dashboard">Dashboard</Link>
+                      </li>
+                    ))}
+
+                  <li>
+                    <Link href="/fecdback">Feedback</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
           <Link href="/" className="btn btn-ghost normal-case text-xl">
@@ -107,9 +129,20 @@ const Header = () => {
             <li>
               <Link href="/service">Service</Link>
             </li>
-            <li>
-              <Link href="/dashboard">Dashboard</Link>
-            </li>
+            {currentUser !== null && (
+              <>
+                {currentUser?.role === "admin" ||
+                  (currentUser?.role === "Superadmin" && (
+                    <li>
+                      <Link href="/dashboard">Dashboard</Link>
+                    </li>
+                  ))}
+
+                <li>
+                  <Link href="/fecdback">Feedback</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
         <div className="navbar-end">
@@ -241,7 +274,7 @@ const Header = () => {
                                           {item?.service?.name}
                                         </h1>
                                         <p className="text-sm font-normal">
-                                         Tk-{item?.service?.price}
+                                          Tk-{item?.service?.price}
                                         </p>
                                       </div>
                                     </div>
@@ -278,9 +311,7 @@ const Header = () => {
                   >
                     <li>
                       <a className="justify-between">
-                        {
-                          currentUser?.name
-                        }
+                        {currentUser?.name}
                         <span className="badge">New</span>
                       </a>
                     </li>
@@ -288,7 +319,7 @@ const Header = () => {
                       <a>Settings</a>
                     </li>
                     <li>
-                      <a>Logout</a>
+                      <button onClick={logout}>Logout</button>
                     </li>
                   </ul>
                 </div>

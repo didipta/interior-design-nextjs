@@ -1,11 +1,13 @@
 "use client";
 
+import { useAppSelector } from "@/redux/hook";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
 const Sidebar = () => {
   const pathname: string | any = usePathname();
+  const { currentUser }: any = useAppSelector((state) => state.UserSlice);
   return (
     <div className="drawer-side">
       <label
@@ -53,6 +55,19 @@ const Sidebar = () => {
           >
             Content
           </Link>
+        </li>
+        {currentUser?.role === "Superadmin" ? (
+          <li>
+            <Link
+              href="/dashboard/user"
+              className={`${pathname === "/dashboard/admin" ? "active" : ""}`}
+            >
+              Admin
+            </Link>
+          </li>
+        ) : null}
+       <li>
+        <Link href="/">Back</Link>
         </li>
       </ul>
     </div>
